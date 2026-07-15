@@ -195,6 +195,8 @@ const chatSlice = createSlice({
         if (msg) msg.status = action.payload.status;
       }
     },
+
+    chatCleared: () => initialState,
   },
 });
 
@@ -209,7 +211,8 @@ export const {
   messagesLoaded,
   messagesMarkedRead,
   messageStatusUpdated,
-  messagesBulkStatusUpdated
+  messagesBulkStatusUpdated,
+  chatCleared
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

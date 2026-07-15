@@ -1,16 +1,16 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { Avatar } from '@/components/common/Avatar';
 import { OnlineBadge } from '@/components/common/OnlineBadge';
 import { useAppSelector } from '@/store/hooks';
 import { MoreVerticalIcon, PhoneIcon, VideoIcon } from '../common/Icons';
 
-
 export function ChatHeader({ conversationId }: { conversationId: string }) {
-
   const conversation = useAppSelector((state) => state.chat.conversations[conversationId]);
   const usersById = useAppSelector((state) => state.user.usersById);
   const connectionStatus = useAppSelector((state) => state.ui.connectionStatus);
+  
+  // 1. Get the current user to exclude their ID
+  const currentUser = useAppSelector((state) => state.user.currentUser);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -26,10 +26,14 @@ export function ChatHeader({ conversationId }: { conversationId: string }) {
 
   if (!conversation) return null;
 
-  const otherParticipant = !conversation.isGroup
-    ? usersById[conversation.participantIds.find((id) => id !== conversation.name)!]
+  // Safely find the other participant's ID by excluding the current user's ID
+  const otherParticipantId = currentUser
+    ? conversation.participantIds.find((id) => id !== currentUser.id)
     : undefined;
 
+  const otherParticipant = !conversation.isGroup && otherParticipantId
+    ? usersById[otherParticipantId]
+    : undefined;
 
   return (
     <div className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3">
@@ -84,4 +88,3 @@ function ConnectionBadge({ status }: { status: string }) {
     </span>
   );
 }
-

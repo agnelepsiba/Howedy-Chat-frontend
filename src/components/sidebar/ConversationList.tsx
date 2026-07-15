@@ -7,6 +7,7 @@ import { Avatar } from '@/components/common/Avatar';
 import { socketService } from '@/services/socketService';
 import { currentUserCleared } from '@/store/slices/userSlice';
 import { clearAuthToken } from '@/services/authApi';
+import { chatCleared } from '@/store/slices/chatSlice';
 
 export function ConversationList({
   activeConversationId,
@@ -47,6 +48,7 @@ export function ConversationList({
     socketService.disconnect();
     dispatch(currentUserCleared());
     clearAuthToken()
+    chatCleared();
     navigate('/login');
   };
 
