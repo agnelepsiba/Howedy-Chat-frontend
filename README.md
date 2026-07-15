@@ -60,32 +60,15 @@ src/
 
 ### 2. Install dependencies
 ```bash
-cd howdy-chat
 npm install
 ```
 
-### 3. Configure environment
-```bash
-cp .env.example .env
-# edit .env if your backend runs somewhere other than localhost:4000
-```
-
-### 4. Run the dev server
+### 3. Run the dev server
 ```bash
 npm run dev
 ```
 Open the printed local URL (default `http://localhost:5173`).
 
-### 5. VS Code workspace settings (optional but recommended)
-Create `.vscode/settings.json`:
-```json
-{
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
-  "typescript.tsdk": "node_modules/typescript/lib"
-}
-```
 
 ### Available scripts
 | Command | Purpose |
@@ -103,14 +86,15 @@ This module ships with a matching backend in the companion `howdy-chat-backend` 
 (Node.js + Express + Socket.IO + MongoDB, JWT auth). It implements exactly the REST and
 socket contracts this frontend expects:
 
-- `POST /api/auth/register`, `POST /api/auth/login`, `GET /api/auth/me`
+- `POST /api/auth/register`, `POST /api/auth/login`, `GET /api/auth/myProfile`
 - `GET /api/conversations`, `POST /api/conversations`, `GET /api/conversations/:id/messages`
 - Socket events: `message:send/new/ack/error`, `typing:start/stop/update`,
   `conversation:join/leave/markRead/read`, `presence:update`
 
 Point this frontend's `.env` at it:
 ```
-VITE_API_BASE_URL=http://localhost:4000/api
 VITE_SOCKET_URL=http://localhost:4000
+VITE_SOCKET_PATH=/socket.io
+VITE_API_BASE_URL=http://localhost:4000/api
 ```
 See the backend's own README for setup and full API reference.
